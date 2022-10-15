@@ -15,7 +15,10 @@
     "bootstrap": "^5.2.2",
     "google-auth-library": "^8.5.2",
     "next": "12.3.1",
+    "ra-data-json-server": "^4.4.1",
+    "ra-data-simple-rest": "^4.4.1",
     "react": "18.2.0",
+    "react-admin": "^4.4.1",
     "react-bootstrap": "^2.5.0",
     "react-dom": "18.2.0",
     "react-google-login": "^5.2.2"
