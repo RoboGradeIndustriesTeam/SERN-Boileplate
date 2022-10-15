@@ -10,7 +10,7 @@ const NavigationBar = ({ user }) => {
     return (
         <Navbar bg="light" expand="lg" sticky={"top"}>
             <Container>
-                <Navbar.Brand href="/">Simple-Dimple-Todos</Navbar.Brand>
+                <Navbar.Brand href="/">FUCKATHON</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
@@ -20,7 +20,7 @@ const NavigationBar = ({ user }) => {
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text>
                         {!!user ? <>
-                            Вы вошли как: <Link href="/profile"><a>{user.username}</a></Link>
+                            Вы вошли как: <Link href="/profile"><a>{user.family_name}</a></Link>
                         </> : <Link href={"/login"}><a>Войти</a></Link>}
 
                     </Navbar.Text>

@@ -19,6 +19,10 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    family_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     password: {
         type: DataTypes.STRING,
         allowNull: false
@@ -51,33 +55,5 @@ User.prototype.generateToken = function () {
 }
 // -------- USER --------
 
-// -------- TODOITEM --------
-const Todo = sequelize.define('Todo', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    author: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: 'Users',
-            key: 'id'
-        }
-    },
-    text: {
-        type: DataTypes.STRING
-    },
-    completed: {
-        type: DataTypes.BOOLEAN,
-        default: false
-    }
-})
-
-User.hasMany(Todo);
-// -------- TODOITEM --------
-
-
 module.exports = sequelize;
 module.exports.User = User;
-module.exports.Todo = Todo;

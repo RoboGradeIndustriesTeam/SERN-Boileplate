@@ -32,6 +32,10 @@ const Page = () => {
                             <Form.Control value={user.username} readOnly={true} disabled={true} type="text" placeholder="Имя пользователя" />
                         </Form.Group>
                         <Form.Group className="mb-3">
+                            <Form.Label>Имя</Form.Label>
+                            <Form.Control value={user.family_name} readOnly={true} disabled={true} type="text" placeholder="Имя" />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
                             <Button variant={"danger"} onClick={() => {
                                 localStorage.clear()
                                 router.push("/");

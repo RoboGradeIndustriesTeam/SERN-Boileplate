@@ -14,7 +14,8 @@ module.exports = new (class {
 
         if (candidate === null) {
             let user = User.build({
-                username
+                username,
+                family_name: username
             });
             user.setPassword(password);
             await user.save();

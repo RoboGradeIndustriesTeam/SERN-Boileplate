@@ -7,8 +7,26 @@ import Modal from 'react-bootstrap/Modal';
 import {setToken} from "../utils/tokenManager";
 import {useRouter} from "next/router";
 import Link from "next/link";
+import {GoogleOAuthProvider, GoogleLogin, useGoogleLogin} from '@react-oauth/google';
+import {SERVER_BASE_URL} from "../lib/config";
+import {AXIOS as axios} from "../lib/config";
 
-
+const handleLogin = async googleData => {
+    console.log(googleData.tokenId)
+    console.log(googleData)
+    const res = await fetch(SERVER_BASE_URL + "/auth/google", {
+        method: "POST",
+        body: JSON.stringify({
+            token: googleData.tokenId
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    const data = await res.json()
+    console.log(data)
+    // store returned user somehow
+}
 
 const Page = () => {
     let [user, setUser] = useState(false);
@@ -18,6 +36,21 @@ const Page = () => {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     let router = useRouter()
+
+    const googleLogin = useGoogleLogin({
+        onSuccess: async ({ code }) => {
+            let response = await axios.post('/auth/google', {
+                code,
+            });
+
+            if (response.data.success) {
+                setToken(response.data.token);
+                await router.push("/")
+            }
+        },
+        flow: 'auth-code',
+    });
+
 
     useEffect(() => {
         isLoggedIn().then(r => {
@@ -56,6 +89,11 @@ const Page = () => {
                         <Button variant="primary" className={"w-100"} onClick={signin}>
                             Войти
                         </Button>
+                        <Button variant="secondary" className={"w-100"} onClick={googleLogin}>
+                            Войти через Google
+                        </Button>
+
+                        <br/>
                         <Link href={"/register"}><a>Нет аккуанта? Регистрация.</a></Link>
                     </Form>
                 </div>
