@@ -1,4 +1,4 @@
-# simple-node-todos
+# Boileplate
 Simple SERN (Sequalize, Express, React/Next.JS, Node) Stack Todo App with Docker Support
 
 Run
