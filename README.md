@@ -1,5 +1,5 @@
 # simple-node-todos
-Simple SERN (Sequalize, Express, React, Node) Stack Todo App with Docker Support
+Simple SERN (Sequalize, Express, React/Next.JS, Node) Stack Todo App with Docker Support
 
 Run
 ```bash
