@@ -81,6 +81,31 @@ export const me = async (token) => {
         }
     }
 }
+export const updateUser = async (token, family_name) => {
+    try {
+        let response = await axios.patch("/auth/me", {
+            family_name
+        }, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+
+        return response.data;
+    }
+    catch (err) {
+        if (err.response) {
+            return err.response.data;
+        }
+        else {
+            return {
+                success: false,
+                message: "Ошибка на стороне клиента"
+            }
+        }
+    }
+}
+
 
 export const isLoggedIn = async () => {
     let token = getToken()

@@ -7,6 +7,7 @@ const {signInWithGoogle} = require("../auth/google");
 AuthRouter.post("/login", AuthController.login)
 AuthRouter.post("/register", AuthController.register)
 AuthRouter.get("/me", [AuthMiddleware], AuthController.me)
+AuthRouter.patch("/me", [AuthMiddleware], AuthController.updateUser)
 
 AuthRouter.post('/google', signInWithGoogle);
 

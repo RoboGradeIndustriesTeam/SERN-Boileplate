@@ -80,4 +80,16 @@ module.exports = new (class {
             }
         }
     }
+    async updateUser(user, family_nane) {
+        if (family_nane) {
+            user.family_name = family_nane;
+        }
+
+        await user.save()
+
+        return {
+            success: true,
+            user
+        }
+    }
 })

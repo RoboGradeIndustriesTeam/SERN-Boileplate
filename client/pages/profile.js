@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import NavigationBar from "../components/NavigationBar";
-import {isLoggedIn} from "../lib/user";
+import {isLoggedIn, updateUser} from "../lib/user";
 import {useRouter} from "next/router";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import {getToken} from "../utils/tokenManager";
 
 
 const Page = () => {
     let [user, setUser] = useState(false);
+    let [displayName, setDisplayName] = useState("");
     let router = useRouter();
 
     useEffect(() => {
@@ -16,6 +18,7 @@ const Page = () => {
                 router.push("/login")
             }
             setUser(r);
+            setDisplayName(r.family_name)
         })
     }, [router]);
 
@@ -33,10 +36,17 @@ const Page = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Имя</Form.Label>
-                            <Form.Control value={user.family_name} readOnly={true} disabled={true} type="text" placeholder="Имя" />
+                            <Form.Control value={displayName} onChange={event => setDisplayName(event.target.value)} type="text" placeholder="Имя" />
                         </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Button variant={"danger"} onClick={() => {
+                        <Form.Group className="mb-3 w-100">
+                            <Button variant={"primary"} className={"w-100"} onClick={() => {
+                                updateUser(getToken(), displayName).then(r => {
+                                    setUser(r.user);
+                                })
+                            }}>Сохранить</Button>
+                        </Form.Group>
+                        <Form.Group className="mb-3 w-100">
+                            <Button variant={"danger"} className={"w-100"} onClick={() => {
                                 localStorage.clear()
                                 router.push("/");
                             }}>Выйти</Button>

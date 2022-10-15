@@ -17,4 +17,9 @@ module.exports = new (class {
             user: req.user
         })
     }
+    updateUser(req, res) {
+        const {family_name} = req.body;
+
+        AuthService.updateUser(req.user, family_name).then(result => ResultToResponse(result, req, res))
+    }
 })

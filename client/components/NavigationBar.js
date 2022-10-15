@@ -6,7 +6,6 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Link from "next/link";
 
 const NavigationBar = ({ user }) => {
-
     return (
         <Navbar bg="light" expand="lg" sticky={"top"}>
             <Container>
