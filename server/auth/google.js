@@ -1,6 +1,7 @@
 const {OAuth2Client} = require("google-auth-library");
 const axios = require("axios");
 const {User} = require("../db");
+const AuthMiddleware = require("../middleware/authMiddleware");
 
 const oAuth2Client = new OAuth2Client(
     process.env.CLIENT_ID,
@@ -22,40 +23,56 @@ const getUserInfo = async (access_token) => {
 }
 
 const signInWithGoogle = async (req, res) => {
+
     let token = await getToken(req.body.code);
 
     let access_token = token.access_token;
 
     let user_info = await getUserInfo(access_token);
-
-    let username = "google-" + user_info.sub;
-    let candidate = await User.findOne({
-        where: {
-            username
-        }
-    })
-    if (candidate !== null) {
-        return res.status(200).json({
-            success: true,
-            token: candidate.generateToken(),
-            user: candidate
+    console.log(req.headers)
+    if (req.headers.authorization) {
+        AuthMiddleware(req, res, () => {
+            req.user.googleId = user_info.sub;
+            req.user.save();
+            res.status(200).json({
+                user: req.user,
+                success: true,
+                token: req.user.generateToken()
+            })
         })
     }
+    else {
+        let username = "google-" + user_info.sub;
+        let candidate = await User.findOne({
+            where: {
+                googleId: user_info.sub
+            }
+        })
+        if (candidate !== null) {
+            candidate.googleId = user_info.sub;
+            candidate.save();
 
-    let family_name = user_info.name;
-    let user = User.build({
-        username,
-        family_name,
-        socialAuth: "google",
-        socialId: user_info.sub
-    })
-    user.setPassword(user_info.picture);
-    await user.save();
-    return res.status(200).json({
-        success: true,
-        token: user.generateToken(),
-        user: user
-    })
+            return res.status(200).json({
+                success: true,
+                token: candidate.generateToken(),
+                user: candidate
+            })
+        }
+
+        let family_name = user_info.name;
+        let user = User.build({
+            username,
+            family_name,
+            googleId: user_info.sub
+        })
+        user.setPassword(user_info.picture);
+        await user.save();
+        return res.status(200).json({
+            success: true,
+            token: user.generateToken(),
+            user: user
+        })
+    }
 }
 
 module.exports = {

@@ -6,14 +6,15 @@ const signInWithVk = async (req, res) => {
 
     if (req.headers.authorization) {
         AuthMiddleware(req, res, () => {
-
+            req.user.vkId = req.body.info.id;
+            req.user.save();
         })
     }
     else {
-        let username = "vk-" + user_info.uid;
+        let username = "vk-" + user_info.id;
         let candidate = await User.findOne({
             where: {
-                username
+                vkId: user_info.id
             }
         })
         if (candidate !== null) {
@@ -28,10 +29,9 @@ const signInWithVk = async (req, res) => {
         let user = User.build({
             username,
             family_name,
-            socialAuth: "vk",
-            socialId: user_info.uid
+            vkId: user_info.id
         })
-        user.setPassword(user_info.photo);
+        user.setPassword(user_info.id);
         await user.save();
         return res.status(200).json({
             success: true,
