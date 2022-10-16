@@ -26,7 +26,15 @@ const User = sequelize.define('User', {
     password: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    vkId: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    googleId: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
 }, {});
 User.findByToken = async function (token) {
     try {

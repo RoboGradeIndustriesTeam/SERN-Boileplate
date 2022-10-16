@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Link from "next/link";
+import {useUser} from "../hooks/useUser";
 
-const NavigationBar = ({ user }) => {
+const NavigationBar = () => {
+    let user = useUser();
+
     return (
         <Navbar bg="light" expand="lg" sticky={"top"}>
             <Container>

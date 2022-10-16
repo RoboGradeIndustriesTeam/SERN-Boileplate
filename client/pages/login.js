@@ -10,6 +10,8 @@ import Link from "next/link";
 import {GoogleOAuthProvider, GoogleLogin, useGoogleLogin} from '@react-oauth/google';
 import {SERVER_BASE_URL} from "../lib/config";
 import {AXIOS as axios} from "../lib/config";
+import {Auth} from "react-vk";
+import {useUser} from "../hooks/useUser";
 
 const handleLogin = async googleData => {
     console.log(googleData.tokenId)
@@ -29,7 +31,7 @@ const handleLogin = async googleData => {
 }
 
 const Page = () => {
-    let [user, setUser] = useState(false);
+    let user = useUser();
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorText, setErrorText] = useState("");
 
@@ -53,9 +55,18 @@ const Page = () => {
 
 
     useEffect(() => {
-        isLoggedIn().then(r => {
-            setUser(r);
-        })
+        VK.Widgets.Auth("vk_auth", {width: 400, onAuth: async function(data) {
+                console.log(data)
+            let response = await axios.post('/auth/vk', {
+                    info: data
+                });
+
+                if (response.data.success) {
+                    setToken(response.data.token);
+                    await router.push("/")
+                }
+            }});
+
     }, []);
 
     const signin = async () => {
@@ -89,9 +100,6 @@ const Page = () => {
                         <Button variant="primary" className={"w-100"} onClick={signin}>
                             Войти
                         </Button>
-                        <Button variant="secondary" className={"w-100"} onClick={googleLogin}>
-                            Войти через Google
-                        </Button>
 
                         <br/>
                         <Link href={"/register"}><a>Нет аккуанта? Регистрация.</a></Link>
@@ -99,26 +107,32 @@ const Page = () => {
                 </div>
             </div>
 
-            <Modal
-                show={showErrorModal}
-                onHide={() => setShowErrorModal(false)}
-                backdrop="static"
-                keyboard={false}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Ошибка</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {errorText}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={() => setShowErrorModal(false)}>
-                        Закрыть
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+
         </div>
     );
 };
+
+// <Modal
+//                 show={showErrorModal}
+//                 onHide={() => setShowErrorModal(false)}
+//                 backdrop="static"
+//                 keyboard={false}
+//             >
+//                 <Modal.Header closeButton>
+//                     <Modal.Title>Ошибка</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body>
+//                     {errorText}
+//                 </Modal.Body>
+//                 <Modal.Footer>
+//                     <Button variant="danger" onClick={() => setShowErrorModal(false)}>
+//                         Закрыть
+//                     </Button>
+//                 </Modal.Footer>
+//             </Modal>
+// <Button variant="secondary" className={"w-100 mt-2"} onClick={googleLogin}>
+//     Войти через Google
+// </Button>
+// <div id="vk_auth" className={"mt-2"}></div>
 
 export default Page;

@@ -11,22 +11,12 @@ import Link from "next/link";
 
 
 const Page = () => {
-    let [user, setUser] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorText, setErrorText] = useState("");
 
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     let router = useRouter()
-
-    useEffect(() => {
-        isLoggedIn().then(r => {
-            setUser(r);
-            if (!!r) {
-                router.push("/")
-            }
-        })
-    }, []);
 
     const signup = async () => {
         let response = await registerF(login, password, false);
@@ -43,7 +33,7 @@ const Page = () => {
 
     return (
         <div>
-            <NavigationBar user={user}/>
+            <NavigationBar/>
             <div style={{width: "100%"}}>
                 <div style={{display: "table", margin: "0 auto"}}>
                     <Form>

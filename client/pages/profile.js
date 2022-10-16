@@ -1,32 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import NavigationBar from "../components/NavigationBar";
-import {isLoggedIn, updateUser} from "../lib/user";
+import {updateUser} from "../lib/user";
 import {useRouter} from "next/router";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import {getToken} from "../utils/tokenManager";
+import {useUser} from "../hooks/useUser";
 
 
 const Page = () => {
-    let [user, setUser] = useState(false);
+    let user = useUser();
     let [displayName, setDisplayName] = useState("");
     let router = useRouter();
 
     useEffect(() => {
-        isLoggedIn().then(r => {
-            if (!r) {
-                router.push("/login")
-            }
-            setUser(r);
-            setDisplayName(r.family_name)
-        })
-    }, [router]);
+        if (!!user) setDisplayName(user.family_name)
+    }, [user]);
 
 
 
     return (
         <div>
-            <NavigationBar user={user}/>
+            <NavigationBar/>
             {!!user ? <div style={{width: "100%"}}>
                 <div style={{display: "table", margin: "0 auto"}}>
                     <Form>
@@ -41,7 +36,7 @@ const Page = () => {
                         <Form.Group className="mb-3 w-100">
                             <Button variant={"primary"} className={"w-100"} onClick={() => {
                                 updateUser(getToken(), displayName).then(r => {
-                                    setUser(r.user);
+                                    router.reload()
                                 })
                             }}>Сохранить</Button>
                         </Form.Group>

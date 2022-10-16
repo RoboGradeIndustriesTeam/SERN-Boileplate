@@ -21,7 +21,8 @@
     "react-admin": "^4.4.1",
     "react-bootstrap": "^2.5.0",
     "react-dom": "18.2.0",
-    "react-google-login": "^5.2.2"
+    "react-google-login": "^5.2.2",
+    "react-vk": "^5.0.2"
   },
   "devDependencies": {
     "eslint": "8.25.0",

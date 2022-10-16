@@ -45,7 +45,9 @@ const signInWithGoogle = async (req, res) => {
     let family_name = user_info.name;
     let user = User.build({
         username,
-        family_name
+        family_name,
+        socialAuth: "google",
+        socialId: user_info.sub
     })
     user.setPassword(user_info.picture);
     await user.save();

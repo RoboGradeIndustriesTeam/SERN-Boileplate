@@ -43,7 +43,7 @@ const main = async () => {
         await sequelize.sync( );
         console.log('Connection has been established successfully.');
 
-        app.listen(80, () => console.log("Server started"))
+        app.listen(3000, () => console.log("Server started"))
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }
