@@ -8,4 +8,5 @@ docker-compose up -d
 
 Or to run in dev
 Change port in `app.listen` call in `server/index.js`
-And change SERVER_BASE_URL to `http://localhost:YOUR_PORT/`
+And change SERVER_BASE_URL to `http://localhost:YOUR_PORT/` in `client/lib/config.js`
+
